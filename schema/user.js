@@ -5,10 +5,41 @@ const joi = require('@hapi/joi')
 const username = joi.string().alphanum().min(3).max(10).required()
 const password = joi.string().pattern(/^[\S]{6,12}/).required()
 
-//定义验证注册和登录表单数据的规则对象
+// 定义 id, nickname, email 的验证规则
+const id = joi.number().integer().min(1).required()
+const nickname = joi.string().required()
+const email = joi.string().email().required()
+const avatar = joi.string().dataUri().required()
+
+//验证规则对象 - 注册和登录
 exports.reg_login_schema = {
     body: {
         username,
         password,
+    }
+}
+
+// 验证规则对象 - 更新用户基本信息
+exports.update_userinfo_schema = {
+    body: {
+        id,
+        nickname,
+        email
+    }
+}
+
+// 验证规则对象 - 重置用户密码
+exports.update_password_schema = {
+    body: {
+        oldPwd: password,
+        // joi.not(joi.ref('oldPwd')) 值表示不能与旧密码一致
+        newPwd: joi.not(joi.ref('oldPwd')).concat(password)
+    }
+}
+
+// 验证规则对象 - 更新头像
+exports.update_avatar_schema = {
+    body: {
+        avatar
     }
 }

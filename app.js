@@ -25,10 +25,15 @@ app.use((req, res, next) => {
 // 在路由之前配置解析 Token 的中间件
 const expressJWT = require('express-jwt')
 const config = require('./config')
+// 使用秘钥对token进行解密，并将解密后信息挂载到res.user对象上
 app.use(expressJWT({ secret: config.jwtSecretKey, algorithms: ["HS256"] }).unless({ path: [/^\/api/] }))
 
+// 导入并使用用户路由模块
 const userRouter = require('./router/user')
 app.use('/api', userRouter)
+// 导入并使用用户信息路由模块
+const userInfoRouter = require('./router/userinfo')
+app.use('/my', userInfoRouter)
 
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
