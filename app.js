@@ -37,6 +37,9 @@ app.use('/my', userInfoRouter)
 // 导入并使用文章分类的路由模块
 const artcateRouter = require('./router/artcate')
 app.use('/my/article', artcateRouter)
+// 导入并使用文章的路由模块
+const articleRouter = require('./router/article')
+app.use('/my/article', articleRouter)
 
 // 定义错误级别的中间件
 app.use((err, req, res, next) => {
